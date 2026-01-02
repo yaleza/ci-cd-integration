@@ -1,10 +1,14 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.http.ContentType;
 import models.User;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 import utils.RandomUtils;
+import io.restassured.mapper.ObjectMapperType;
 
 import static io.restassured.RestAssured.given;
 
@@ -13,7 +17,9 @@ public class CreateUserTest {
     private static final String BASE_PATH = "/v2";
     private static final String CREATE_USER_ENDPOINT = "/user";
 
-
+    @Feature("User API")
+    @Story("Create user")
+    @Description("Verify user can be created successfully")
     @Test(description = "Create a user - 200 Success")
     public void createUser() {
         User user = new User();
@@ -29,7 +35,7 @@ public class CreateUserTest {
                 .baseUri(API_URL)
                 .basePath(BASE_PATH)
                 .contentType(ContentType.JSON)
-                .body(user)
+                .body(user, ObjectMapperType.JACKSON_2)
                 .when()
                 .post(CREATE_USER_ENDPOINT)
                 .then()
